@@ -40,15 +40,16 @@ pipeline{
                 archiveArtifacts artifacts: 'target/*.jar'
             }
         }
-    }
-    stage('pruebas'){
-        when{
-            expression { params.EJECUTAR_TESTS == true}
+        stage('pruebas'){
+            when{
+                expression { params.EJECUTAR_TESTS == true}
+            }
+            steps{
+                echo 'Ejecutando pruebas..'
+            }
         }
-        steps{
-            echo 'Ejecutando pruebas..'
-        }
     }
+
 
     post{
         failure{
