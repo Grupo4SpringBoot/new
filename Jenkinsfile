@@ -37,7 +37,18 @@ pipeline{
                 archiveArtifacts artifacts: 'target/*.jar'
             }
         }
+    }
+    post{
+        failure{
+            echo "Fallo: la construccion ${env.BUILD_NUMBER} de ${env.JOB_NAME} ha fallado. Revisar la etapaenrojo."
+        }
 
+        success {
+            echo : "Ok: la construccion ${env.BUILD_NUMBER} de ${env.JOB_NAME} ha terminado bien."
+        }
+        fixed{
+            echo "Recuperada: ${env.JOB_NAME} vuelve a funcionar desde la construccion ${env.BUILD_NUMBER}"
+        }
     }
 
 }
