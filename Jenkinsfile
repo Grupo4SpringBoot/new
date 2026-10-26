@@ -1,8 +1,11 @@
 pipeline{
     agent any
     tools{
-    jdk 'jdk-21'
-    maven 'maven-3.9'
+        jdk 'jdk-21'
+        maven 'maven-3.9'
+    }
+    parameters{
+        booleanParam(name: 'EJECUTAR_TESTS', defaultValue: true, description: '¿Ejecutar pruebas?')
     }
     stages{
         stage('saludo'){
@@ -38,9 +41,18 @@ pipeline{
             }
         }
     }
+    stage('pruebas'){
+        when{
+            expression { params.EJECUTAR_TESTS == true}
+        }
+        steps{
+            echo 'Ejecutando pruebas..'
+        }
+    }
+
     post{
         failure{
-            echo "Fallo: la construccion ${env.BUILD_NUMBER} de ${env.JOB_NAME} ha fallado. Revisar la etapaenrojo."
+            echo "Fallo: la construccion ${env.BUILD_NUMBER} de ${env.JOB_NAME} ha fallado. Revisar la etapa en rojo."
         }
 
         success {
