@@ -44,7 +44,7 @@ pipeline{
         }
 
         success {
-            echo : "Ok: la construccion ${env.BUILD_NUMBER} de ${env.JOB_NAME} ha terminado bien."
+            echo "Ok: la construccion ${env.BUILD_NUMBER} de ${env.JOB_NAME} ha terminado bien."
         }
         fixed{
             echo "Recuperada: ${env.JOB_NAME} vuelve a funcionar desde la construccion ${env.BUILD_NUMBER}"
