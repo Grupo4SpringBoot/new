@@ -20,7 +20,7 @@ class ContactoTests {
         Contacto contacto = new Contacto("Lucía Pérez", "lucia@example.com", "600123456");
 
         assertEquals("Lucía Pérez", contacto.getNombre());
-        assertEquals("lucia@example.com", contacto.getEmail());
+        assertEquals("lucia@examplel.com", contacto.getEmail());
         assertEquals("600123456", contacto.getTelefono());
     }
 
