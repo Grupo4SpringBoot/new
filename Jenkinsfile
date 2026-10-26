@@ -1,5 +1,9 @@
 pipeline{
     agent any
+    tools{
+    jdk 'jdk-21'
+    maven 'maven-3.9'
+    }
     stages{
         stage('saludo'){
             steps{
@@ -16,9 +20,24 @@ pipeline{
                 bat 'mvn -B clean compile'
             }
         }
-        post {
-            always {
-                junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
+        stage('probar') {
+            steps {
+                bat 'mvn -B test'
             }
+            post{
+                always {
+                    junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
+                }
+            }
+        }
+        stage('empaquetar') {
+            steps {
+                bat 'mvn -B package -DskipTests'
+
+                archiveArtifacts: 'target/*.jar'
+            }
+        }
+
     }
+
 }
