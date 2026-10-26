@@ -34,7 +34,7 @@ pipeline{
             steps {
                 bat 'mvn -B package -DskipTests'
 
-                archiveArtifacts: 'target/*.jar'
+                archiveArtifacts artifacts: 'target/*.jar'
             }
         }
 
