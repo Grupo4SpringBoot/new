@@ -16,5 +16,9 @@ pipeline{
                 bat 'mvn -B clean compile'
             }
         }
+        post {
+            always {
+                junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
+            }
     }
 }
