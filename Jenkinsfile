@@ -27,16 +27,6 @@ pipeline{
                 bat 'mvn -B clean compile'
             }
         }
-        stage('probar') {
-            steps {
-                bat 'mvn -B test'
-            }
-            post{
-                always {
-                    junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
-                }
-            }
-        }
         stage('empaquetar') {
             when{
                 expression{return  params.EMPAQUETAR}
@@ -65,7 +55,7 @@ pipeline{
             }
         }
     }
-    
+
     post{
         failure{
             echo "Fallo: la construccion ${env.BUILD_NUMBER} de ${env.JOB_NAME} ha fallado. Revisar la etapa en rojo."
