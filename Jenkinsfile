@@ -46,11 +46,11 @@ pipeline{
         }
         stage('probar'){
             steps{
-                bat "mvn -B test -DsipTests= ${!params.EJECUTAR_PRUEBAS}"
+                bat "mvn -B test -DskipTests=${!params.EJECUTAR_PRUEBAS}"
             }
             post{
                 always{
-                    junit testResults: 'target/surefire-reports/*.xml, allowEmptyResults: true'
+                    junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
                 }
             }
         }
