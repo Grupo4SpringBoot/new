@@ -6,6 +6,10 @@ pipeline{
     }
     parameters{
         booleanParam(name: 'EJECUTAR_TESTS', defaultValue: true, description: '¿Ejecutar pruebas?')
+
+        booleanParam(name: 'EJECUTAR_PRUEBAS', defaultValue: true, description: 'Marcar para ejecutar las pruebas. Desmarcar para saltarla.')
+
+        booleanParam(name: 'EMPAQUETAR', defaultValue: true, description: 'Marcar para generar y guardar el JAR. Desmarcar para omitir')
     }
     stages{
         stage('saludo'){
@@ -34,10 +38,12 @@ pipeline{
             }
         }
         stage('empaquetar') {
-            steps {
+            when{
+                expression{return  params.EMPAQUETAR}
+            }
+            steps{
                 bat 'mvn -B package -DskipTests'
-
-                archiveArtifacts artifacts: 'target/*.jar'
+                archiveArtifacts: 'target/*.jar'
             }
         }
         stage('pruebas'){
@@ -48,9 +54,18 @@ pipeline{
                 echo 'Ejecutando pruebas..'
             }
         }
+        stage('probar'){
+            steps{
+                bat "mvn -B test -DsipTests= ${!params.EJECUTAR_PRUEBAS}"
+            }
+            post{
+                always{
+                    junit testResults: 'target/surefire-reports/*.xml, allowEmptyResults: true'
+                }
+            }
+        }
     }
-
-
+    
     post{
         failure{
             echo "Fallo: la construccion ${env.BUILD_NUMBER} de ${env.JOB_NAME} ha fallado. Revisar la etapa en rojo."
